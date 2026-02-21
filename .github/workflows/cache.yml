@@ -1,0 +1,25 @@
+name: Caching Verification
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Create a dummy file to ensure there is something to cache
+      - name: Create dummy dependency
+        run: echo "IITM Verification Data" > dependency.txt
+
+      - name: Cache dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: dependency.txt
+          key: cache-c7d17ed
+
+      - name: prime-cache-c7d17ed
+        run: echo "Cache hit status is ${{ steps.cache-step.outputs.cache-hit }}"
